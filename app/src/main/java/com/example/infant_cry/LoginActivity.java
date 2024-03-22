@@ -1,5 +1,5 @@
 package com.example.infant_cry;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -52,12 +53,12 @@ public class LoginActivity extends AppCompatActivity
 
     class MyButtonListener implements View.OnClickListener
     {
-        public void onClick(View view)
-        {
-            String name=user.getText().toString();
-            String pow=pwo.getText().toString();
-            tvC.setText("用户名:"+name+"密码:"+pow+"登录");
-
+        public void onClick(View view) {
+            String name = user.getText().toString();
+            String pow = pwo.getText().toString();
+            tvC.setText("用户名:" + name + "密码:" + pow + "登录");
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         }
     }
 }
