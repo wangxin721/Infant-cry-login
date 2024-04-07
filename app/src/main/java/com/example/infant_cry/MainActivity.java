@@ -1,12 +1,6 @@
 package com.example.infant_cry;
 
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -17,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         if (!recordingsDir.exists()) {
             recordingsDir.mkdirs();
         }
-        String filename = "myrecording.mp3";
+        String filename = ".mp3";
         File outputFile = new File(recordingsDir, filename);
 
         recorder = new MediaRecorder();
@@ -130,16 +126,24 @@ public class MainActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 System.out.println("upload thread");
                 textView.setText("识别中loading....");
-                PostThread thread = new PostThread(audioFile);
-                thread.run();
-//                try {
-//                    thread.join();
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-                textView.setText(thread.file);
+                PostThread thread = new PostThread(audioFile, new OnThreadCompleteListener() {
+                    @Override
+                    public void onThreadComplete(String result) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //在主线程中更新ui
+                                textView.setText(result);
+                            }
+                        });
+
+                    }
+                });
+                thread.start();
+
             }
         });
 

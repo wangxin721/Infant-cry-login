@@ -2,13 +2,16 @@ package com.example.infant_cry;
 
 import java.io.IOException;
 
+
 public class PostThread extends Thread {
-    final String url = "http://10.241.151.186:12888/upload";
+    final String url = "http://10.236.76.223:12888/upload";
 
     public String file;
+    private OnThreadCompleteListener listener;
 
-    public PostThread(String audioFile) {
+    public PostThread(String audioFile, OnThreadCompleteListener postListener) {
         this.file = audioFile;
+        this.listener = postListener;
     }
 
 
@@ -20,6 +23,8 @@ public class PostThread extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        file = result;
+        if (listener != null) {
+            listener.onThreadComplete(result);
+        }
     }
 }

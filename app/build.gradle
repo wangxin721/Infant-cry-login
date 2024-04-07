@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.chaquo.python'
 }
 
 android {
@@ -8,11 +9,25 @@ android {
 
     defaultConfig {
         applicationId "com.example.infant_cry"
-        minSdk 24
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        ndk {
+            // 指定abi，如需在模拟器调试，增加"x86"，否则指定"armeabi-v7a"即可
+            abiFilters "armeabi-v7a", "x86"
+        }
+        python {
+            // 指定python路径 注意更换为自己的Python路径！！
+            buildPython "C:\\Users\\76514\\miniconda\\envs\\infant_cry\\python.exe"
 
+            //安装第三方库
+            //pip{
+            //install "opencv-python"
+            //install "numpy"
+            //}
+
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,6 +49,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation files('libs\\gradle-8.0.0.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
